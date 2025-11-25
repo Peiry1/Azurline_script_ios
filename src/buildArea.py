@@ -41,13 +41,21 @@ class Build:
 
     def daily_build(self):
         print("start daily_build")
-        action.click(1222, 600)
+        action.click(1222, 600)  # 点击主界面中央唤醒界面
         time.sleep(3)
-        action.click(1792, 1175)  # 主屏幕点击建造（长轴，短轴）
+        action.click(1792, 1175)  # 主屏幕点击建造（长轴，短轴
         time.sleep(4)
+        action.click(710, 1099)  # 选择轻型舰船
+        time.sleep(2)
         self.start_build(0)
         self.return_home()
+        print("success")
 
     def retire_ship(self):
         action.click(82, 821)
         time.sleep(1)
+
+
+if __name__ == "__main__":
+    bl = Build()
+    bl.daily_build()

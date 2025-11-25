@@ -5,10 +5,22 @@ from ascript.ios import node
 from ascript.ios import screen
 from ascript.ios.screen import Ocr
 from ascript.ios.screen import FindColors
-import time
+
+### 大舰队物资筹备模块 ###
 
 
 class Fleet:
+    priority_list = [
+        "粮食筹备",
+        "物资筹备",
+        "燃料筹备",
+        "材料筹备I",
+        "材料筹备II",
+        "材料筹备III",
+        "材料筹备",
+        "战功提交",
+    ]
+
     def __init__(self):
         self.screenR1 = 0
         self.screenR2 = 0
@@ -44,16 +56,7 @@ class Fleet:
     def selectProvisionMission(self):
         all_confidences_above_threshold = True
         processed_slots_info = []
-        priority_list = [
-            "粮食筹备",
-            "物资筹备",
-            "燃料筹备",
-            "材料筹备I",
-            "材料筹备II",
-            "材料筹备III",
-            "材料筹备",
-            "战功提交",
-        ]
+
         res = Ocr(rect=[756, 718, 1697, 777]).paddleocr_v3()
 
         if not res or len(res) != 3:
@@ -67,7 +70,7 @@ class Fleet:
                 all_confidences_above_threshold = False
                 print("文字识别可信度不足，无法进行后续处理。")
                 return
-            if r["text"] not in priority_list:
+            if r["text"] not in self.priority_list:
                 print(f"识别到非预期的文本: '{r['text']}'，不在有效任务选项列表中。")
                 return
 
@@ -84,14 +87,15 @@ class Fleet:
 
         best_match_index = -1
         found_priority_task = False
-        for currentText in priority_list:
+        for currentText in self.priority_list:
+            print(f"尝试匹配优先级任务: {currentText}")
             for current_index, slot in enumerate(processed_slots_info):
-                print(slot["text"])
-                print(currentText)
+                print(f"当前匹配项：{slot['text']}")
+
                 if slot["text"] == currentText:
                     best_match_index = current_index + 1
                     found_priority_task = True
-                    print(f"{best_match_index}, 选择: {slot['text']}")
+                    print(f"成功选中：槽位{best_match_index}, 选择: {slot['text']}")
                     break
             if found_priority_task:
                 break
@@ -120,3 +124,9 @@ class Fleet:
         self.getFleetSupply()
         time.sleep(1)
         action.click(98, 86)  # 大舰队返回主界面（长轴，短轴）
+        print("success")
+
+
+if __name__ == "__main__":
+    myFleet = Fleet()
+    myFleet.provisionMissionProcess()

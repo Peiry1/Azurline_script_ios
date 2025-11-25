@@ -57,21 +57,15 @@ class LivingArea:
     def enterDormitoryProcess(self):
         action.click(748, 836)  # 主屏幕进入后宅
         time.sleep(4)
+        action.click(1900, 1090)  # 主屏幕点击确定，跳出经验获得提示
+        time.sleep(2)
         action.click(1222, 600)  # 主屏幕点击屏幕边缘，跳过提醒
         time.sleep(2)
-        action.click(564, 1162)  # 点击食堂
+        action.click(564, 1162)  # 点击食量
         time.sleep(2)
         self.supplyFoodProcess()
-        action.click(320, 272)  # 点击空白，退出食堂
+        action.click(320, 272)  # 点击空白，退出食量
         time.sleep(1)
-        action.click(98, 86)  # 返回主界面（长轴，短轴）
-        time.sleep(3)
-
-    def enterCaroomProces(self):
-        action.click(1143, 764)  # 主屏幕进入指挥猫
-        time.sleep(4)
-        action.click(1222, 600)  # 主屏幕点击中心，跳过提醒
-        time.sleep(2)
         action.click(98, 86)  # 返回主界面（长轴，短轴）
         time.sleep(3)
 
@@ -79,5 +73,9 @@ class LivingArea:
         print("start daily food supply")
         self.enterLivingArea()
         self.enterDormitoryProcess()
-        self.enterLivingArea()
-        self.enterCaroomProces()
+        print("success")
+
+
+if __name__ == "__main__":
+    lv = LivingArea()
+    lv.dailyLivingAreaRoutine()
